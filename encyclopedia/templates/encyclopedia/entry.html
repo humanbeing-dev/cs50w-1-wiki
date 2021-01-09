@@ -5,8 +5,9 @@
 {% endblock %}
 
 {% block body %}
-    <h1>All Pages</h1>
-
-    <p>{{ content }}</p>
-
+    {{ content|safe }}
+    <form action="{% url 'edit_entry' title %}">
+        <input type="submit" value="Edit" />
+    </form>
+    
 {% endblock %}
