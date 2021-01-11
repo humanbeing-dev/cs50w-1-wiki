@@ -18,6 +18,8 @@ def wiki(request, title):
     entries = util.list_entries()
     content = util.get_entry(title)
 
+    util.markdown_to_HTML(content)
+
     if content:
         return render(request, "encyclopedia/entry.html", {"content": markdown(content), "title": title})
     else:

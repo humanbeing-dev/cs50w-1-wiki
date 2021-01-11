@@ -2,7 +2,6 @@ import re
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from markdown2 import Markdown
 
 
 def list_entries():
@@ -38,5 +37,30 @@ def get_entry(title):
         return None
 
 
-def convert_to_html(line):
-    return Markdown(line)
+def markdown_to_HTML(content):
+    """
+    To implement:
+    - headings
+    - boldface
+    - unordered list
+    - links
+    - paragraphs
+    """
+    print(content)
+
+    head_pattern = "(#+) ([\w* ]+)"
+    bold_pattern = "\*[\w]+\*"
+
+    def find_heading(regex_object):
+
+        # Check how many hashes in md
+        hash_counter = len(regex_object.group(1))
+        heading_type = min(hash_counter, 6)
+        tag_content = regex_object.group(2)
+        return f"<h{heading_type}>{'#' * (hash_counter % 6) + ' ' if hash_counter > 6 else ''}{tag_content}</h{heading_type}>"
+
+    new_content = re.sub(head_pattern, find_heading, content)
+
+    a = re.search(bold_pattern, content)
+    print(a)
+    print(new_content)
