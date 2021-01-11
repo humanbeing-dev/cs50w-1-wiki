@@ -49,18 +49,30 @@ def markdown_to_HTML(content):
     print(content)
 
     head_pattern = "(#+) ([\w* ]+)"
-    bold_pattern = "\*[\w]+\*"
+    bold_pattern = "\*([\w]+)+\*"
 
     def find_heading(regex_object):
-
         # Check how many hashes in md
         hash_counter = len(regex_object.group(1))
         heading_type = min(hash_counter, 6)
         tag_content = regex_object.group(2)
         return f"<h{heading_type}>{'#' * (hash_counter % 6) + ' ' if hash_counter > 6 else ''}{tag_content}</h{heading_type}>"
 
-    new_content = re.sub(head_pattern, find_heading, content)
 
-    a = re.search(bold_pattern, content)
-    print(a)
+    def find_bold(regex_object):
+        # Check how many hashes in md
+        tag_content = regex_object.group(1)
+        return f"<strong>{tag_content}<strong>"
+
+    
+    def find_italic(regex_object):
+        # Check how many hashes in md
+        tag_content = regex_object.group(1)
+        return f"<strong>{tag_content}<strong>"
+
+
+    new_content = re.sub(head_pattern, find_heading, content)
+    print(new_content)
+
+    new_content = re.sub(bold_pattern, find_bold, new_content)
     print(new_content)
