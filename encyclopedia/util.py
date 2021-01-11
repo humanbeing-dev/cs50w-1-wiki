@@ -49,7 +49,12 @@ def markdown_to_HTML(content):
     print(content)
 
     head_pattern = "(#+) ([\w* ]+)"
-    bold_pattern = "\*([\w]+)+\*"
+    bold_pattern = "\*{2}([\w]+)+\*{2}"
+    italic_pattern = "\*{1}([\w]+)+\*{1}"
+    list_pattern = "- ([\w]+)"
+    link_pattern = "\[(\w+)\]\(([/\w]+)\)"
+
+    # <a href='2'>1</a>
 
     def find_heading(regex_object):
         # Check how many hashes in md
@@ -62,17 +67,32 @@ def markdown_to_HTML(content):
     def find_bold(regex_object):
         # Check how many hashes in md
         tag_content = regex_object.group(1)
-        return f"<strong>{tag_content}<strong>"
+        return f"<strong>{tag_content}</strong>"
 
     
     def find_italic(regex_object):
         # Check how many hashes in md
         tag_content = regex_object.group(1)
-        return f"<strong>{tag_content}<strong>"
+        return f"<em>{tag_content}</em>"
+
+        
+    def find_list(regex_object):
+        # Check how many hashes in md
+        tag_content = regex_object.group(1)
+        return f"<li>{tag_content}</li>"
+
+
+    def find_link(regex_object):
+        # Check how many hashes in md
+        tag_content = regex_object.group(1)
+        link = regex_object.group(2)
+        return f"<a href='{link}'>{tag_content}</a>"
 
 
     new_content = re.sub(head_pattern, find_heading, content)
-    print(new_content)
-
     new_content = re.sub(bold_pattern, find_bold, new_content)
+    new_content = re.sub(italic_pattern, find_italic, new_content)
+    new_content = re.sub(list_pattern, find_list, new_content)
+    new_content = re.sub(link_pattern, find_link, new_content)
+
     print(new_content)
